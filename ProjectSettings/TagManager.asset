@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Chest
   - Enemy
+  - Team1
+  - Team2
   layers:
   - Default
   - TransparentFX

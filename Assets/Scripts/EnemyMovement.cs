@@ -7,13 +7,16 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private Transform player;
+    [SerializeField] private GameObject currentTarget;
+    [SerializeField]
+    private GameObject[] targets;
     private Animator animator;
-    private EnemyStates enemyState;
+    [SerializeField] private EnemyStates enemyState;
     private RaycastHit hit;
     private GameObject eyeHeight;
-    private int healthPoints;
+    [SerializeField] private int healthPoints;
     private bool isAttacking;
+    public GameObject maxTarget;
     public enum EnemyStates
     {
         Idle,
@@ -22,31 +25,33 @@ public class EnemyMovement : MonoBehaviour
         Dead
     }
     public float chaseRange = 1000;
-    public float walkSpeed = 4;
-    public float runSpeed = 10;
+    public float walkSpeed = 1;
+    public float runSpeed = 2;
+
+    [SerializeField] private bool isDead = false;
+    private string enemyTeam = "";
 
     // Start is called before the first frame update
     void Start()
     {
+        if (gameObject.tag == "Team1")
+        { 
+            targets = GameObject.FindGameObjectsWithTag("Team2");
+            enemyTeam = "Team2";
+        }
+        else { 
+            targets = GameObject.FindGameObjectsWithTag("Team1");
+            enemyTeam = "Team1";
+        }
+
         agent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
         enemyState = EnemyStates.Idle;
         eyeHeight = transform.Find("EyeHeight").gameObject;
         healthPoints = 100;
         isAttacking = false;
     }
-    
-    public void Hit(int hitAmount)
-    {
-        healthPoints -= hitAmount;
-        if (healthPoints <= 0)
-        {
-            enemyState = EnemyStates.Dead;
-            return;
-        }
-        StartCoroutine(Hit());
-    }
+   
 
     // Update is called once per frame
     void Update()
@@ -74,6 +79,8 @@ public class EnemyMovement : MonoBehaviour
     {
         animator.SetInteger("State", (int)EnemyStates.Dead);
         //destroy enemy collision
+        StopAllCoroutines();
+        isDead = true;
         Destroy(GetComponent<Collider>());
         agent.enabled = false;
     }
@@ -81,17 +88,34 @@ public class EnemyMovement : MonoBehaviour
     private void Chase()
     {
         agent.speed = runSpeed;
-        agent.SetDestination(player.position);
+        agent.SetDestination(currentTarget.transform.position);
         animator.SetInteger("State", (int)EnemyStates.Chase);
 
         // check if distance to player is less than stopping distance
-        if (Vector3.Distance(transform.position, player.position) <= agent.stoppingDistance && !isAttacking)
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance && !isAttacking)
         {
+            if (currentTarget.GetComponent<EnemyMovement>())
+                currentTarget.GetComponent<EnemyMovement>().Hit(25);
+            if (currentTarget.GetComponent<PlayerMovement>())
+                currentTarget.GetComponent<PlayerMovement>().Hit(25);
             StartCoroutine(Attack());
         }
-        
+
+        if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().isDead)
+        {
+            enemyState = EnemyStates.Roam;
+        }
     }
 
+    private void Idle()
+    {
+        animator.SetInteger("State", (int)EnemyStates.Idle);
+
+        // if player is in range, change state to chase
+        ChooseEnemyInRange();
+        // every second decide if to change state to roam
+        StartCoroutine(DecideIdleOrRoam());
+    }
     private void Roam()
     {
         agent.speed = walkSpeed;
@@ -100,29 +124,34 @@ public class EnemyMovement : MonoBehaviour
         {
             enemyState = EnemyStates.Idle;
         }
-        IsPlayerInRange();
+        ChooseEnemyInRange();
     }
 
-    private void Idle()
+    private void ChooseEnemyInRange()
     {
-        animator.SetInteger("State", (int)EnemyStates.Idle);
-
-        // if player is in range, change state to chase
-        IsPlayerInRange();
-        // every second decide if to change state to roam
-        StartCoroutine(DecideIdleOrRoam());
-    }
-
-    private void IsPlayerInRange()
-    {
-        if (Physics.Raycast(eyeHeight.transform.position, player.position - eyeHeight.transform.position, out hit, chaseRange))
+        currentTarget = maxTarget;
+        foreach (GameObject target in targets)
         {
-            if (hit.collider.tag == "Player")
+            if (target.GetComponent<EnemyMovement>())
             {
-                enemyState = EnemyStates.Chase;
+                if (Vector3.Distance(transform.position, target.transform.position) 
+                    <= Vector3.Distance(transform.position, currentTarget.transform.position) 
+                    && !target.GetComponent<EnemyMovement>().isDead)
+                {
+                    currentTarget = target;
+                }
+
+            }
+            else if (target.GetComponent<PlayerMovement>())
+            {
+                if (Vector3.Distance(transform.position, target.transform.position)
+                    <= Vector3.Distance(transform.position, currentTarget.transform.position))
+                    currentTarget = target;
             }
         }
+        enemyState = EnemyStates.Chase;
     }
+
 
     private Vector3 RandomNavmeshLocation(Vector3 origin, float dist)
     {
@@ -135,6 +164,17 @@ public class EnemyMovement : MonoBehaviour
             finalPosition = hit.position;
         }
         return finalPosition;
+    }
+
+    public void Hit(int hitAmount)
+    {
+        healthPoints -= hitAmount;
+        if (healthPoints <= 0)
+        {
+            enemyState = EnemyStates.Dead;
+            return;
+        }
+        StartCoroutine(Hit());
     }
 
     private IEnumerator DecideIdleOrRoam()
@@ -151,7 +191,8 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.isStopped = true;
         yield return new WaitForSeconds(1);
-        agent.isStopped = false;
+        if (agent.enabled)
+            agent.isStopped = false;
     }
 
     IEnumerator Attack()
@@ -160,7 +201,8 @@ public class EnemyMovement : MonoBehaviour
         agent.isStopped = true;
         animator.SetTrigger("Attack");
         yield return new WaitForSeconds(1.1f);
-        agent.isStopped = false;
+        if (agent.enabled)
+            agent.isStopped = false;
         isAttacking = false;
     }
 }

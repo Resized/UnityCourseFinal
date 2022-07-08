@@ -1,14 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private int healthPoints = 100;
     public CharacterController controller;
     public float speed = 12f;
 
     public Vector3 velocity;
-    public GameObject enemy;
 
     // Start is called before the first frame update
     private void Start()
@@ -28,15 +29,19 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += Physics.gravity.y * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // if pressing q change enemy animation state
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            enemy.GetComponent<Animator>().SetInteger("State", 1);
-        }
-        else if (Input.GetKeyUp(KeyCode.Q))
-        {
-            enemy.GetComponent<Animator>().SetInteger("State", 0);
-        }
+    }
 
+    internal void Hit(int hitAmount)
+    {
+        healthPoints -= hitAmount;
+        if (healthPoints <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        throw new NotImplementedException();
     }
 }

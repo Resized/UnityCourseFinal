@@ -24,7 +24,7 @@ public class WeaponController : MonoBehaviour
             // play animation
             Attack();
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Swing"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Swing") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.5)
         {
             isAttacking = true;
         }
