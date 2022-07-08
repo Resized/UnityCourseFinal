@@ -41,42 +41,42 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Arrow_DIFF
-    second: {fileID: 2800000, guid: 2fe682b9b452ebb4da8cdce245979e54, type: 3}
+    second: {fileID: 2800000, guid: 40c26dd1bea92cb4baebbd239c9c318e, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Arrow_NM
-    second: {fileID: 2800000, guid: 33cc20e5e80e5a74a80439721623ada4, type: 3}
+    second: {fileID: 2800000, guid: 58bd29c621b0db445832a1458c456f74, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Bow_DIFF
-    second: {fileID: 2800000, guid: 94f23d065483c924eaf09dbb1b53370f, type: 3}
+    second: {fileID: 2800000, guid: 9d278134b4e8f684b8ef2c688110ce92, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Bow_NM
-    second: {fileID: 2800000, guid: 3581c576f23b47c4d8eeaa0247b8d61a, type: 3}
+    second: {fileID: 2800000, guid: 25dc6d9e4444bba45b8543772a26be06, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Erika_Archer_Clothes_diffuse
-    second: {fileID: 2800000, guid: eedf3eb949d46ad41bab62f954b608a7, type: 3}
+    second: {fileID: 2800000, guid: 826127f513de44348804701dfb7c1a6d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Erika_Archer_Clothes_normal
-    second: {fileID: 2800000, guid: 996460719699089418bfaf099fc901cd, type: 3}
+    second: {fileID: 2800000, guid: c2bcbe9a609d038478c858160c486b3b, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: FemaleFitA_Body_diffuse
-    second: {fileID: 2800000, guid: 7404f6ce0ad045f4db757df144f6e864, type: 3}
+    second: {fileID: 2800000, guid: be66eb53b6e623a4592e1bdde45b3961, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: FemaleFitA_StdNM
-    second: {fileID: 2800000, guid: 37ab535ef2bac3c4c9f1b854758d5e6d, type: 3}
+    second: {fileID: 2800000, guid: bd2fe699c3f3d9a4fa9a6cf76cf4b698, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
