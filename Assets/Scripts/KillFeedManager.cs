@@ -9,31 +9,28 @@ public class KillFeedManager : MonoBehaviour
 {
     UIController uicontroller;
     [SerializeField] GameObject killTextPrefab;
-    List<GameObject> kfMessages = new List<GameObject>();
+    [SerializeField] public List<KillFeedText> kfMessages = new List<KillFeedText>();
 
-    int space = 50;
+
     private void Awake()
     {
         uicontroller = GameObject.Find("UI").GetComponent<UIController>();
     }
-
-
-
-
-    internal void UpdateKillFeed(string name, string tag)
+    internal void UpdateKillFeed(string botName, string botTag)
     {
-        GameObject killText = Instantiate(killTextPrefab, transform.position, Quaternion.identity, transform);
-        TextMeshProUGUI killTMP = killText.GetComponentInChildren<TextMeshProUGUI>();
-        killTMP.text = $"bot {name} Died";
-        if (tag == "Team1")
+        if (kfMessages.Count >= 5)
         {
-            killTMP.color = Color.blue;
+            kfMessages[0].RemoveFromFeed();
+            kfMessages.RemoveAt(0);
         }
-        else
-        {
-            killTMP.color = Color.red;
-
-        }
+        GameObject feedObject = Instantiate(killTextPrefab, transform);
+        KillFeedText feedText = feedObject.GetComponent<KillFeedText>();
+        feedText.messageTag = botTag;
+        feedText.messageName = botName;
+        kfMessages.Add(feedText);
+        feedObject.transform.SetSiblingIndex(kfMessages.Count);
 
     }
+
+
 }

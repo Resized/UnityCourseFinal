@@ -20,16 +20,19 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject arrowSpawnPoint;
     [SerializeField] private float attackCooldown;
+    [SerializeField] private EnemyType myEnemyType;
+    public int HealthPoints => healthPoints;
+    private bool isAttacking;
+    public GameObject maxTarget;
+    public float chaseRange = 1000;
+    public float walkSpeed = 1;
+    public float runSpeed = 2;
     private enum EnemyType
     {
         Archer,
         Soldier,
         Bombardier
     }
-    [SerializeField] private EnemyType myEnemyType;
-    public int HealthPoints => healthPoints;
-    private bool isAttacking;
-    public GameObject maxTarget;
     public enum EnemyStates
     {
         Idle,
@@ -37,9 +40,7 @@ public class EnemyMovement : MonoBehaviour
         Chase,
         Dead
     }
-    public float chaseRange = 1000;
-    public float walkSpeed = 1;
-    public float runSpeed = 2;
+
 
     [SerializeField] private bool isDead = false;
     private string enemyTeam = "";
@@ -51,29 +52,7 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (gameObject.tag == "Team1")
-        {
-            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (var mesh in meshes)
-            {
-                var c = Color.red;
-                mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
-            }
-            targets = GameObject.FindGameObjectsWithTag("Team2");
-            enemyTeam = "Team2";
-        }
-        else
-        {
-            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (var mesh in meshes)
-            {
-
-                mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
-            }
-            targets = GameObject.FindGameObjectsWithTag("Team1");
-
-            enemyTeam = "Team1";
-        }
+        CheckMyTeam();
 
         switch (myEnemyType)
         {
@@ -92,7 +71,7 @@ public class EnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         enemyState = EnemyStates.Idle;
         eyeHeight = transform.Find("EyeHeight").gameObject;
-        healthPoints = 100;
+        healthPoints = UnityEngine.Random.Range(100, 200);
         isAttacking = false;
 
     }
@@ -119,6 +98,33 @@ public class EnemyMovement : MonoBehaviour
                 break;
         }
     }
+    private void CheckMyTeam()
+    {
+        if (gameObject.tag == "Team1")
+        {
+            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                var c = Color.red;
+                mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
+            }
+            targets = GameObject.FindGameObjectsWithTag("Team2");
+            enemyTeam = "Team2";
+        }
+        else
+        {
+            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+
+                mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
+            }
+            targets = GameObject.FindGameObjectsWithTag("Team1");
+
+            enemyTeam = "Team1";
+        }
+    }
+
 
     private void Idle()
     {
@@ -258,7 +264,7 @@ public class EnemyMovement : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
 
         if (myEnemyType == EnemyType.Archer)
-        {            
+        {
             Projectile arrow = Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation).GetComponent<Projectile>();
             arrow.SetTarget(currentTarget);
             arrow.gameObject.SetActive(true);
