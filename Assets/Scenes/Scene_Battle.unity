@@ -215,7 +215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -237
+      value: -210.65
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -223,7 +223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 121.74
+      value: 100.52
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -257,6 +257,10 @@ PrefabInstance:
       propertyPath: maxTarget
       value: 
       objectReference: {fileID: 59938367}
+    - target: {fileID: 7221458769256769659, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
+      propertyPath: healthPoints
+      value: 532
+      objectReference: {fileID: 0}
     - target: {fileID: 7563425781494362790, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_Name
       value: Archer (4)
@@ -585,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -251.82
+      value: -225.47
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -593,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 122.08
+      value: 100.86
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -627,6 +631,10 @@ PrefabInstance:
       propertyPath: maxTarget
       value: 
       objectReference: {fileID: 59938367}
+    - target: {fileID: 7221458769256769659, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
+      propertyPath: healthPoints
+      value: 532
+      objectReference: {fileID: 0}
     - target: {fileID: 7563425781494362790, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_Name
       value: Archer (1)
@@ -651,7 +659,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &226404268
 Transform:
@@ -689,7 +697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -241.55
+      value: -215.2
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -697,7 +705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 121.44
+      value: 100.22
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -731,6 +739,10 @@ PrefabInstance:
       propertyPath: maxTarget
       value: 
       objectReference: {fileID: 59938367}
+    - target: {fileID: 7221458769256769659, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
+      propertyPath: healthPoints
+      value: 532
+      objectReference: {fileID: 0}
     - target: {fileID: 7563425781494362790, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_Name
       value: Archer (2)
@@ -916,6 +928,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone Wall 5
       objectReference: {fileID: 0}
+    - target: {fileID: 102178, guid: 509406478466f2142a7b757139f01063, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 447342, guid: 509406478466f2142a7b757139f01063, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1042,6 +1058,10 @@ PrefabInstance:
     - target: {fileID: 102178, guid: 509406478466f2142a7b757139f01063, type: 3}
       propertyPath: m_Name
       value: Stone Wall 5 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 102178, guid: 509406478466f2142a7b757139f01063, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 447342, guid: 509406478466f2142a7b757139f01063, type: 3}
       propertyPath: m_RootOrder
@@ -1226,7 +1246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -246.25
+      value: -219.9
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1234,7 +1254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 120.65
+      value: 99.43
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1268,6 +1288,10 @@ PrefabInstance:
       propertyPath: maxTarget
       value: 
       objectReference: {fileID: 59938367}
+    - target: {fileID: 7221458769256769659, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
+      propertyPath: healthPoints
+      value: 532
+      objectReference: {fileID: 0}
     - target: {fileID: 7563425781494362790, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_Name
       value: Archer
@@ -1809,7 +1833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -256.97
+      value: -230.62
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1817,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 127.64
+      value: 106.42
       objectReference: {fileID: 0}
     - target: {fileID: 7187040220304435228, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1851,6 +1875,10 @@ PrefabInstance:
       propertyPath: maxTarget
       value: 
       objectReference: {fileID: 59938367}
+    - target: {fileID: 7221458769256769659, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
+      propertyPath: healthPoints
+      value: 532
+      objectReference: {fileID: 0}
     - target: {fileID: 7563425781494362790, guid: d94937c11809ede45ab4ad04654ff10b, type: 3}
       propertyPath: m_Name
       value: Archer (3)
@@ -2060,7 +2088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8717185518558218136, guid: 3263a6c1ed751bf46889a0aefc32c6ba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.74
+      value: -70.8
       objectReference: {fileID: 0}
     - target: {fileID: 8717185518558218136, guid: 3263a6c1ed751bf46889a0aefc32c6ba, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2068,7 +2096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8717185518558218136, guid: 3263a6c1ed751bf46889a0aefc32c6ba, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.36
+      value: 25.8
       objectReference: {fileID: 0}
     - target: {fileID: 8717185518558218136, guid: 3263a6c1ed751bf46889a0aefc32c6ba, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2493,9 +2521,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 226404268}
     m_Modifications:
+    - target: {fileID: 128688, guid: ecf0e240b717eac49b350e6bbaa98e77, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 147134, guid: ecf0e240b717eac49b350e6bbaa98e77, type: 3}
       propertyPath: m_Name
       value: Stone Gates
+      objectReference: {fileID: 0}
+    - target: {fileID: 147134, guid: ecf0e240b717eac49b350e6bbaa98e77, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 182726, guid: ecf0e240b717eac49b350e6bbaa98e77, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 488290, guid: ecf0e240b717eac49b350e6bbaa98e77, type: 3}
       propertyPath: m_RootOrder
@@ -2955,6 +2995,10 @@ PrefabInstance:
     - target: {fileID: 156698, guid: 36605810a346476488169e9cd1c1f9df, type: 3}
       propertyPath: m_Name
       value: Stone Wall 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 156698, guid: 36605810a346476488169e9cd1c1f9df, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 488974, guid: 36605810a346476488169e9cd1c1f9df, type: 3}
       propertyPath: m_RootOrder

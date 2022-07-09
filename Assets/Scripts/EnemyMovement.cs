@@ -94,6 +94,7 @@ public class EnemyMovement : MonoBehaviour
         eyeHeight = transform.Find("EyeHeight").gameObject;
         healthPoints = 100;
         isAttacking = false;
+
     }
 
 
@@ -119,34 +120,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void Dead()
-    {
-        animator.SetInteger("State", (int)EnemyStates.Dead);
-        //destroy enemy collision
-        StopAllCoroutines();
-        isDead = true;
-        Destroy(GetComponent<Collider>());
-        agent.enabled = false;
-    }
-
-    private void Chase()
-    {
-        agent.speed = runSpeed;
-        agent.SetDestination(currentTarget.transform.position);
-        animator.SetInteger("State", (int)EnemyStates.Chase);
-
-        // check if distance to player is less than stopping distance
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance && !isAttacking)
-        {
-            StartCoroutine(Attack());
-        }
-
-        if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().isDead)
-        {
-            enemyState = EnemyStates.Roam;
-        }
-    }
-
     private void Idle()
     {
         animator.SetInteger("State", (int)EnemyStates.Idle);
@@ -165,6 +138,36 @@ public class EnemyMovement : MonoBehaviour
             enemyState = EnemyStates.Idle;
         }
         ChooseEnemyInRange();
+    }
+
+    private void Chase()
+    {
+        agent.speed = runSpeed;
+        agent.SetDestination(currentTarget.transform.position);
+        animator.SetInteger("State", (int)EnemyStates.Chase);
+
+        // check if distance to player is less than stopping distance
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance && !isAttacking)
+        {
+            StartCoroutine(Attack());
+        }
+
+        if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().isDead)
+        {
+            enemyState = EnemyStates.Roam;
+        }
+
+        if ((int)Time.time % 2 == 0)
+            ChooseEnemyInRange();
+    }
+    private void Dead()
+    {
+        animator.SetInteger("State", (int)EnemyStates.Dead);
+        //destroy enemy collision
+        StopAllCoroutines();
+        isDead = true;
+        Destroy(GetComponent<Collider>());
+        agent.enabled = false;
     }
 
     private void ChooseEnemyInRange()
