@@ -8,10 +8,11 @@ public class KillFeedText : MonoBehaviour
 {
     // Start is called before the first frame update
     bool dying = false;
-    int timeToFade = 3;
-    float fadeTimer = 0;
+    [SerializeField] int timeToFade = 3;
+    [SerializeField] float fadeTimer = 0;
     [SerializeField] Color startColor;
     [SerializeField] Color endColor;
+    [SerializeField] Color bgImageEndColor;
     KillFeedManager kfManager;
 
     [SerializeField] Image bgImage;
@@ -23,6 +24,8 @@ public class KillFeedText : MonoBehaviour
 
         kfManager = GetComponentInParent<KillFeedManager>();
         feedTMP = GetComponentInChildren<TextMeshProUGUI>();
+        bgImageEndColor = bgImage.color;
+        bgImageEndColor.a = 0;
 
     }
     void Start()
@@ -36,8 +39,8 @@ public class KillFeedText : MonoBehaviour
     {
         if (dying)
         {
-            feedTMP.color = Vector4.Lerp(startColor, endColor, fadeTimer / (timeToFade * 1.5f));
-            bgImage.color = Vector4.Lerp(bgImage.color, Vector4.zero, fadeTimer / (timeToFade * 1.5f));
+            feedTMP.color = Vector4.Lerp(startColor, endColor, fadeTimer / timeToFade);
+            bgImage.color = Vector4.Lerp(bgImage.color, bgImageEndColor, fadeTimer / (timeToFade * 10) * Time.deltaTime);
             fadeTimer += Time.deltaTime;
         }
     }
