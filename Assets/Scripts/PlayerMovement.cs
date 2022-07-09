@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private int healthPoints = 100;
+    public int HealthPoints => healthPoints;
     public CharacterController controller;
     public float speed = 12f;
 
@@ -42,6 +43,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Die()
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 }

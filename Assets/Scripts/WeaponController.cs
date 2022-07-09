@@ -8,7 +8,7 @@ public class WeaponController : MonoBehaviour
     private Animator anim;
     private bool isAttacking = false;
     public GameObject weapon;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +39,7 @@ public class WeaponController : MonoBehaviour
         // set hit animation on collider
         if (isAttacking)
         {
+            print("test");
             other.GetComponent<Animator>().SetTrigger("Hit");
             other.GetComponent<EnemyMovement>().Hit(25);
         }

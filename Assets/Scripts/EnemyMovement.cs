@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
+
+    UIController uicontroller;
     private NavMeshAgent agent;
     [SerializeField] private GameObject currentTarget;
     [SerializeField]
@@ -15,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
     private RaycastHit hit;
     private GameObject eyeHeight;
     [SerializeField] private int healthPoints;
+    public int HealthPoints => healthPoints;
     private bool isAttacking;
     public GameObject maxTarget;
     public enum EnemyStates
@@ -31,16 +34,34 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private bool isDead = false;
     private string enemyTeam = "";
 
+    private void Awake()
+    {
+        uicontroller = FindObjectOfType<UIController>();
+    }
     // Start is called before the first frame update
     void Start()
     {
         if (gameObject.tag == "Team1")
-        { 
+        {
+            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                var c = Color.red;
+                mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
+            }
             targets = GameObject.FindGameObjectsWithTag("Team2");
             enemyTeam = "Team2";
         }
-        else { 
+        else
+        {
+            var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+
+                mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
+            }
             targets = GameObject.FindGameObjectsWithTag("Team1");
+
             enemyTeam = "Team1";
         }
 
@@ -51,7 +72,7 @@ public class EnemyMovement : MonoBehaviour
         healthPoints = 100;
         isAttacking = false;
     }
-   
+
 
     // Update is called once per frame
     void Update()
@@ -134,8 +155,8 @@ public class EnemyMovement : MonoBehaviour
         {
             if (target.GetComponent<EnemyMovement>())
             {
-                if (Vector3.Distance(transform.position, target.transform.position) 
-                    <= Vector3.Distance(transform.position, currentTarget.transform.position) 
+                if (Vector3.Distance(transform.position, target.transform.position)
+                    <= Vector3.Distance(transform.position, currentTarget.transform.position)
                     && !target.GetComponent<EnemyMovement>().isDead)
                 {
                     currentTarget = target;
@@ -168,14 +189,21 @@ public class EnemyMovement : MonoBehaviour
 
     public void Hit(int hitAmount)
     {
+        if (enemyState == EnemyStates.Dead)
+        {
+            return;
+        }
         healthPoints -= hitAmount;
         if (healthPoints <= 0)
         {
             enemyState = EnemyStates.Dead;
+            uicontroller.EnemyDied(this);
             return;
         }
         StartCoroutine(Hit());
     }
+
+
 
     private IEnumerator DecideIdleOrRoam()
     {
