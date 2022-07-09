@@ -2229,6 +2229,9 @@ MonoBehaviour:
   targets: []
   enemyState: 0
   healthPoints: 0
+  projectile: {fileID: 0}
+  arrowSpawnPoint: {fileID: 0}
+  myEnemyType: 1
   maxTarget: {fileID: 4779293372974185430, guid: 90591f8b7323c044a89a347425929d1f, type: 3}
   chaseRange: 20
   walkSpeed: 1

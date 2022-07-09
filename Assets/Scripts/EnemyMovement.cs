@@ -17,6 +17,16 @@ public class EnemyMovement : MonoBehaviour
     private RaycastHit hit;
     private GameObject eyeHeight;
     [SerializeField] private int healthPoints;
+    [SerializeField] private GameObject projectile;
+    [SerializeField] private GameObject arrowSpawnPoint;
+    [SerializeField] private float attackCooldown;
+    private enum EnemyType
+    {
+        Archer,
+        Soldier,
+        Bombardier
+    }
+    [SerializeField] private EnemyType myEnemyType;
     public int HealthPoints => healthPoints;
     private bool isAttacking;
     public GameObject maxTarget;
@@ -63,6 +73,19 @@ public class EnemyMovement : MonoBehaviour
             targets = GameObject.FindGameObjectsWithTag("Team1");
 
             enemyTeam = "Team1";
+        }
+
+        switch (myEnemyType)
+        {
+            case EnemyType.Archer:
+                attackCooldown = 1.5f;
+                break;
+            case EnemyType.Soldier:
+                attackCooldown = 1.1f;
+                break;
+            case EnemyType.Bombardier:
+                attackCooldown = 3;
+                break;
         }
 
         agent = GetComponent<NavMeshAgent>();
@@ -115,10 +138,6 @@ public class EnemyMovement : MonoBehaviour
         // check if distance to player is less than stopping distance
         if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance && !isAttacking)
         {
-            if (currentTarget.GetComponent<EnemyMovement>())
-                currentTarget.GetComponent<EnemyMovement>().Hit(25);
-            if (currentTarget.GetComponent<PlayerMovement>())
-                currentTarget.GetComponent<PlayerMovement>().Hit(25);
             StartCoroutine(Attack());
         }
 
@@ -203,7 +222,10 @@ public class EnemyMovement : MonoBehaviour
         StartCoroutine(Hit());
     }
 
-
+    internal GameObject GetTarget()
+    {
+        return currentTarget;
+    }
 
     private IEnumerator DecideIdleOrRoam()
     {
@@ -227,8 +249,29 @@ public class EnemyMovement : MonoBehaviour
     {
         isAttacking = true;
         agent.isStopped = true;
+        transform.LookAt(currentTarget.transform);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(attackCooldown);
+
+        if (myEnemyType == EnemyType.Archer)
+        {            
+            Projectile arrow = Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation).GetComponent<Projectile>();
+            arrow.SetTarget(currentTarget);
+            arrow.gameObject.SetActive(true);
+        }
+        else if (myEnemyType == EnemyType.Soldier)
+        {
+            if (currentTarget.GetComponent<EnemyMovement>())
+                currentTarget.GetComponent<EnemyMovement>().Hit(25);
+            if (currentTarget.GetComponent<PlayerMovement>())
+                currentTarget.GetComponent<PlayerMovement>().Hit(25);
+        }
+        else if (myEnemyType == EnemyType.Bombardier)
+        {
+            Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation, arrowSpawnPoint.transform);
+        }
+
         if (agent.enabled)
             agent.isStopped = false;
         isAttacking = false;
