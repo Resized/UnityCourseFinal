@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Team1
   - Team2
+  - catapult
+  - arrow
   layers:
   - Default
   - TransparentFX

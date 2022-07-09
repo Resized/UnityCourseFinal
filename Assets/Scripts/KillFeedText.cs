@@ -50,13 +50,21 @@ public class KillFeedText : MonoBehaviour
         if (messageTag == "Team1")
         {
             startColor = Color.blue;
+            startColor.r = 0.7f;
+            startColor.g = 0.7f;
             endColor = Color.blue;
+            endColor.r = 0.7f;
+            endColor.g = 0.7f;
             endColor.a = 0;
         }
         else
         {
             startColor = Color.red;
+            startColor.b = 0.3f;
+            startColor.g = 0.3f;
             endColor = Color.red;
+            endColor.b = 0.3f;
+            endColor.g = 0.3f;
             endColor.a = 0;
         }
 

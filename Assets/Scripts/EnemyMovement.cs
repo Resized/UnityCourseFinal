@@ -266,7 +266,7 @@ public class EnemyMovement : MonoBehaviour
         if (myEnemyType == EnemyType.Archer)
         {
             Projectile arrow = Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation).GetComponent<Projectile>();
-            arrow.SetTarget(currentTarget);
+            arrow.SetTarget(currentTarget, gameObject);
             arrow.gameObject.SetActive(true);
         }
         else if (myEnemyType == EnemyType.Soldier)
