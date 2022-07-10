@@ -25,21 +25,21 @@ public class Projectile : MonoBehaviour
         if (projectileTag == "catapult")
         {
             speed = 250f;
-            rb.AddForce(calculateBestThrowSpeed(transform.position, target, 3f), ForceMode.VelocityChange);
+            rb.AddForce(calcBestThrowVec(transform.position, target, 20f), ForceMode.VelocityChange);
         }
         else if (projectileTag == "arrow")
         {
-            rb.AddForce(calculateBestThrowSpeed(transform.position, target, 0.3f), ForceMode.VelocityChange);
+            rb.AddForce(calcBestThrowVec(transform.position, target, 50f), ForceMode.VelocityChange);
         }
         else if (projectileTag == "bomb")
         {
             speed = 100f;
-            rb.AddForce(calculateBestThrowSpeed(transform.position, target, 3f), ForceMode.VelocityChange);
+            rb.AddForce(calcBestThrowVec(transform.position, target, 10f), ForceMode.VelocityChange);
         }
 
     }
 
-    private Vector3 calculateBestThrowSpeed(Vector3 origin, Vector3 target, float timeToTarget)
+    private Vector3 calcBestThrowVec(Vector3 origin, Vector3 target, float speed)
     {
         // calculate vectors
         Vector3 toTarget = target - origin;
@@ -54,7 +54,7 @@ public class Projectile : MonoBehaviour
         // where a is "-gravity" but only on the y plane, and a is 0 in xz plane.
         // so xz = v0xz * t => v0xz = xz / t
         // and y = v0y * t - 1/2 * gravity * t * t => v0y * t = y + 1/2 * gravity * t * t => v0y = y / t + 1/2 * gravity * t
-        float t = timeToTarget;
+        float t = xz / speed;
         float v0y = y / t + 0.5f * Physics.gravity.magnitude * t;
         float v0xz = xz / t;
 
@@ -65,6 +65,7 @@ public class Projectile : MonoBehaviour
 
         return result;
     }
+
 
     // Update is called once per frame
     void Update()

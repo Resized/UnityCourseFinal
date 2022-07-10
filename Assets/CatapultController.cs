@@ -25,6 +25,10 @@ public class CatapultController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentTarget)
+        {
+            transform.LookAt(currentTarget.transform);
+        }
         if ((int)Time.time % 2 == 0)
             ChooseEnemyInRange();
     }
@@ -48,7 +52,6 @@ public class CatapultController : MonoBehaviour
     {
         if (!isAttacking)
         {
-            transform.LookAt(currentTarget.transform);
             anim.SetTrigger("Shoot");
             StartCoroutine(ShootProjectile());
         }
@@ -60,7 +63,7 @@ public class CatapultController : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         Projectile projectileInstance = Instantiate(projectile, projectileSpawn.transform.position, Quaternion.identity).GetComponent<Projectile>();
         projectileInstance.SetTarget(currentTarget, gameObject);
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.733f);
         isAttacking = false;
 
     }

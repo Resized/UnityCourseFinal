@@ -489,9 +489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7df3f55ba821a1d4cb2c1fc1cf4d9839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   projectile: {fileID: 675638039978354409, guid: 4e2dcc280cd4b1b44a29630f1912e151, type: 3}
   projectileSpawn: {fileID: 9108852640340921310}
+  currentTarget: {fileID: 0}
 --- !u!1 &167240
 GameObject:
   m_ObjectHideFlags: 0

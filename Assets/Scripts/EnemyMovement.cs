@@ -57,7 +57,8 @@ public class EnemyMovement : MonoBehaviour
         switch (myEnemyType)
         {
             case EnemyType.Archer:
-                attackCooldown = 1.5f;
+                attackCooldown = 0.6139f;
+                windUpTime = 1.1191f;
                 break;
             case EnemyType.Soldier:
                 attackCooldown = 1.1f;
@@ -269,10 +270,11 @@ public class EnemyMovement : MonoBehaviour
 
         if (myEnemyType == EnemyType.Archer)
         {
-            yield return new WaitForSeconds(attackCooldown);
+            yield return new WaitForSeconds(windUpTime);
             Projectile arrow = Instantiate(projectile, projectileSpawnPoint.transform.position, projectileSpawnPoint.transform.rotation).GetComponent<Projectile>();
             arrow.SetTarget(currentTarget, gameObject);
             arrow.gameObject.SetActive(true);
+            yield return new WaitForSeconds(attackCooldown);
         }
         else if (myEnemyType == EnemyType.Soldier)
         {
@@ -285,7 +287,6 @@ public class EnemyMovement : MonoBehaviour
         else if (myEnemyType == EnemyType.Grenadier)
         {
             yield return new WaitForSeconds(windUpTime);
-            // 1.216
             Projectile bomb = Instantiate(projectile, projectileSpawnPoint.transform.position, projectileSpawnPoint.transform.rotation, projectileSpawnPoint.transform).GetComponent<Projectile>();
             bomb.SetTarget(currentTarget, gameObject);
             bomb.gameObject.SetActive(true);
