@@ -2115,7 +2115,7 @@ GameObject:
   - component: {fileID: 7839246249329175516}
   m_Layer: 0
   m_Name: EnemySoldier
-  m_TagString: Team2
+  m_TagString: Team1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2231,8 +2231,9 @@ MonoBehaviour:
   enemyState: 0
   healthPoints: 0
   projectile: {fileID: 0}
-  arrowSpawnPoint: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
   attackCooldown: 0
+  windUpTime: 0
   myEnemyType: 1
   maxTarget: {fileID: 0}
   chaseRange: 20

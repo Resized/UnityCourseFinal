@@ -13,7 +13,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]
     private GameObject[] targets;
     [SerializeField] private bool isDead = false;
-    private string enemyTeam = "";
+    private string enemyTeam;
     private Animator animator;
     [SerializeField] private EnemyStates enemyState;
     private RaycastHit hit;
