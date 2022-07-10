@@ -12,6 +12,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject currentTarget;
     [SerializeField]
     private GameObject[] targets;
+    [SerializeField] private bool isDead = false;
+    private string enemyTeam = "";
     private Animator animator;
     [SerializeField] private EnemyStates enemyState;
     private RaycastHit hit;
@@ -21,9 +23,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject arrowSpawnPoint;
     [SerializeField] private float attackCooldown;
     [SerializeField] private EnemyType myEnemyType;
+    private GameObject maxTarget;
     public int HealthPoints => healthPoints;
     private bool isAttacking;
-    public GameObject maxTarget;
     public float chaseRange = 1000;
     public float walkSpeed = 1;
     public float runSpeed = 2;
@@ -40,10 +42,6 @@ public class EnemyMovement : MonoBehaviour
         Chase,
         Dead
     }
-
-
-    [SerializeField] private bool isDead = false;
-    private string enemyTeam = "";
 
     private void Awake()
     {
@@ -73,7 +71,7 @@ public class EnemyMovement : MonoBehaviour
         eyeHeight = transform.Find("EyeHeight").gameObject;
         healthPoints = UnityEngine.Random.Range(100, 200);
         isAttacking = false;
-
+        maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
     }
 
 
@@ -172,7 +170,7 @@ public class EnemyMovement : MonoBehaviour
         //destroy enemy collision
         StopAllCoroutines();
         isDead = true;
-        Destroy(GetComponent<Collider>());
+        GetComponent<Collider>().enabled = false;
         agent.enabled = false;
     }
 
@@ -229,6 +227,11 @@ public class EnemyMovement : MonoBehaviour
             return;
         }
         StartCoroutine(Hit());
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 
     internal GameObject GetTarget()

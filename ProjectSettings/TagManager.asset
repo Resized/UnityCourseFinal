@@ -10,6 +10,7 @@ TagManager:
   - Team2
   - catapult
   - arrow
+  - MaxTarget
   layers:
   - Default
   - TransparentFX
