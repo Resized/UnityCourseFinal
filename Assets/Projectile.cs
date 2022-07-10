@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     private string enemyTeamTag;
     private string projectileTag;
     private GameObject shooter;
+    public ParticleSystem explosion;
 
     Rigidbody rb;
     
@@ -80,6 +81,8 @@ public class Projectile : MonoBehaviour
             {
                 Vector3 explosionPos = transform.position;
                 Collider[] colliders = Physics.OverlapSphere(explosionPos, 5f);
+                ParticleSystem explode = Instantiate(explosion, explosionPos, Quaternion.identity);
+                explode.Play();
                 foreach (Collider hit in colliders)
                 {
                     Debug.Log(hit.gameObject.name);
@@ -92,13 +95,17 @@ public class Projectile : MonoBehaviour
                 return;
 
             }
-            if (collider.GetComponent<EnemyMovement>())
-                collider.GetComponent<EnemyMovement>().Hit(25);
-            if (collider.GetComponent<PlayerMovement>())
-                collider.GetComponent<PlayerMovement>().Hit(25);
-            if (collider.tag == "Team1" || collider.tag == "Team2")
+            else if (projectileTag != "bomb")
             {
-                Destroy(gameObject);
+                if (collider.GetComponent<EnemyMovement>())
+                    collider.GetComponent<EnemyMovement>().Hit(25);
+                if (collider.GetComponent<PlayerMovement>())
+                    collider.GetComponent<PlayerMovement>().Hit(25);
+                if (collider.tag == "Team1" || collider.tag == "Team2")
+                {
+                    Destroy(gameObject);
+                }
+
             }
         }
     }
