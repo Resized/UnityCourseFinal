@@ -30,6 +30,12 @@ public class Projectile : MonoBehaviour
         {
             rb.AddForce((target-transform.position).normalized* speed, ForceMode.Impulse);
         }
+        else if (projectileTag == "bomb")
+        {
+            speed = 100f;
+            rb.AddForce((target - transform.position).normalized * speed, ForceMode.Impulse);
+        }
+
     }
 
     // Update is called once per frame

@@ -20,10 +20,11 @@ public class EnemyMovement : MonoBehaviour
     private GameObject eyeHeight;
     [SerializeField] private int healthPoints;
     [SerializeField] private GameObject projectile;
-    [SerializeField] private GameObject arrowSpawnPoint;
+    [SerializeField] private GameObject projectileSpawnPoint;
     [SerializeField] private float attackCooldown;
+    [SerializeField] private float windUpTime;
     [SerializeField] private EnemyType myEnemyType;
-    private GameObject maxTarget;
+    [SerializeField] private GameObject maxTarget;
     public int HealthPoints => healthPoints;
     private bool isAttacking;
     public float chaseRange = 1000;
@@ -33,7 +34,7 @@ public class EnemyMovement : MonoBehaviour
     {
         Archer,
         Soldier,
-        Bombardier
+        Grenadier
     }
     public enum EnemyStates
     {
@@ -46,6 +47,7 @@ public class EnemyMovement : MonoBehaviour
     private void Awake()
     {
         uicontroller = FindObjectOfType<UIController>();
+        maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
     }
     // Start is called before the first frame update
     void Start()
@@ -60,8 +62,9 @@ public class EnemyMovement : MonoBehaviour
             case EnemyType.Soldier:
                 attackCooldown = 1.1f;
                 break;
-            case EnemyType.Bombardier:
-                attackCooldown = 3;
+            case EnemyType.Grenadier:
+                attackCooldown = 2.6503f;
+                windUpTime = 2.2167f;
                 break;
         }
 
@@ -71,7 +74,6 @@ public class EnemyMovement : MonoBehaviour
         eyeHeight = transform.Find("EyeHeight").gameObject;
         healthPoints = UnityEngine.Random.Range(100, 200);
         isAttacking = false;
-        maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
     }
 
 
@@ -264,24 +266,30 @@ public class EnemyMovement : MonoBehaviour
         transform.LookAt(currentTarget.transform);
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(attackCooldown);
 
         if (myEnemyType == EnemyType.Archer)
         {
-            Projectile arrow = Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation).GetComponent<Projectile>();
+            yield return new WaitForSeconds(attackCooldown);
+            Projectile arrow = Instantiate(projectile, projectileSpawnPoint.transform.position, projectileSpawnPoint.transform.rotation).GetComponent<Projectile>();
             arrow.SetTarget(currentTarget, gameObject);
             arrow.gameObject.SetActive(true);
         }
         else if (myEnemyType == EnemyType.Soldier)
         {
+            yield return new WaitForSeconds(attackCooldown);
             if (currentTarget.GetComponent<EnemyMovement>())
                 currentTarget.GetComponent<EnemyMovement>().Hit(25);
             if (currentTarget.GetComponent<PlayerMovement>())
                 currentTarget.GetComponent<PlayerMovement>().Hit(25);
         }
-        else if (myEnemyType == EnemyType.Bombardier)
+        else if (myEnemyType == EnemyType.Grenadier)
         {
-            Instantiate(projectile, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation, arrowSpawnPoint.transform);
+            yield return new WaitForSeconds(windUpTime);
+            // 1.216
+            Projectile bomb = Instantiate(projectile, projectileSpawnPoint.transform.position, projectileSpawnPoint.transform.rotation, projectileSpawnPoint.transform).GetComponent<Projectile>();
+            bomb.SetTarget(currentTarget, gameObject);
+            bomb.gameObject.SetActive(true);
+            yield return new WaitForSeconds(attackCooldown);
         }
 
         if (agent.enabled)

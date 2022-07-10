@@ -2227,16 +2227,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 0}
   targets: []
+  isDead: 0
   enemyState: 0
   healthPoints: 0
   projectile: {fileID: 0}
   arrowSpawnPoint: {fileID: 0}
+  attackCooldown: 0
   myEnemyType: 1
-  maxTarget: {fileID: 4779293372974185430, guid: 90591f8b7323c044a89a347425929d1f, type: 3}
+  maxTarget: {fileID: 0}
   chaseRange: 20
   walkSpeed: 1
   runSpeed: 2
-  isDead: 0
 --- !u!1 &7087951260933631574
 GameObject:
   m_ObjectHideFlags: 0
