@@ -102,7 +102,7 @@ public class UIController : MonoBehaviour
             Loss();
         }
     }
-    
+
     public void CheckWin()
     {
         if (enemies.Count == 0)
@@ -153,6 +153,7 @@ public class UIController : MonoBehaviour
         player.transform.position = attackersSpawnPoint.position;
         player.transform.rotation = attackersSpawnPoint.rotation;
         player.GetComponent<CharacterController>().enabled = true;
+        player.GetComponent<PlayerMovement>().SetupTeammates();
         ResumeGame();
     }
 
@@ -168,8 +169,9 @@ public class UIController : MonoBehaviour
         chooseDefendersBtn.gameObject.SetActive(false);
         player.transform.position = defendersSpawnPoint.position;
         player.transform.rotation = defendersSpawnPoint.rotation;
-        Debug.Log("Moved player to " + defendersSpawnPoint.position);
+        // Debug.Log("Moved player to " + defendersSpawnPoint.position);
         player.GetComponent<CharacterController>().enabled = true;
+        player.GetComponent<PlayerMovement>().SetupTeammates();
         ResumeGame();
     }
 
@@ -182,6 +184,6 @@ public class UIController : MonoBehaviour
 
     private void LateUpdate()
     {
-        
+
     }
 }

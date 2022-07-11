@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     public ParticleSystem explosion;
 
     Rigidbody rb;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,9 +70,9 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         Collider collider = collision.collider;
@@ -86,7 +86,7 @@ public class Projectile : MonoBehaviour
                 explode.Play();
                 foreach (Collider hit in colliders)
                 {
-                    Debug.Log(hit.gameObject.name);
+                    // Debug.Log(hit.gameObject.name);
                     if (hit.GetComponent<EnemyMovement>())
                         hit.GetComponent<EnemyMovement>().Hit(25);
                     if (hit.GetComponent<PlayerMovement>())
@@ -116,5 +116,5 @@ public class Projectile : MonoBehaviour
         this.target = currentTarget.GetComponent<Collider>().bounds.center;
         this.shooter = shooter;
     }
-    
+
 }

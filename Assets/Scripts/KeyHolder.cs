@@ -34,7 +34,7 @@ public class KeyHolder : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
             {
-                Debug.Log("Hit " + hit.collider.name);
+                // Debug.Log("Hit " + hit.collider.name);
                 Key key = hit.collider.GetComponent<Key>();
                 if (key != null)
                 {

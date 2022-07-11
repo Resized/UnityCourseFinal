@@ -37,7 +37,7 @@ public class MouseLook : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "Chest")
             {
-                Debug.Log("Chest");
+                // Debug.Log("Chest");
             }
         }
     }

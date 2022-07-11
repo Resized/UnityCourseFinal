@@ -12,6 +12,8 @@ TagManager:
   - bomb
   - Attackers
   - Defenders
+  - Team2
+  - Team1
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Interactable
   - Water
   - UI
-  - 
+  - Enemies
   - 
   - 
   - 

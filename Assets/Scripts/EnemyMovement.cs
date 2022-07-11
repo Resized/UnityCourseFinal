@@ -23,15 +23,16 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject projectileSpawnPoint;
     [SerializeField] private float attackCooldown;
     [SerializeField] private float windUpTime;
-    [SerializeField] private EnemyType myEnemyType;
+    [SerializeField] public EnemyType myEnemyType;
     [SerializeField] private GameObject maxTarget;
+    [SerializeField] public Vector3 controlledTarget;
     private TeamController teamController;
     public int HealthPoints => healthPoints;
     private bool isAttacking;
     public float chaseRange = 1000;
     public float walkSpeed = 1;
     public float runSpeed = 2;
-    private enum EnemyType
+    public enum EnemyType
     {
         Archer,
         Soldier,
@@ -42,7 +43,8 @@ public class EnemyMovement : MonoBehaviour
         Idle,
         Roam,
         Chase,
-        Dead
+        Dead,
+        Controlled
     }
 
     private void Awake()
@@ -75,7 +77,7 @@ public class EnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         enemyState = EnemyStates.Idle;
         eyeHeight = transform.Find("EyeHeight").gameObject;
-        healthPoints = UnityEngine.Random.Range(100, 200);
+        healthPoints = UnityEngine.Random.Range(300, 600);
         isAttacking = false;
     }
 
@@ -97,8 +99,39 @@ public class EnemyMovement : MonoBehaviour
             case EnemyStates.Dead:
                 Dead();
                 break;
+            case EnemyStates.Controlled:
+                Controlled();
+                break;
             default:
                 break;
+        }
+
+    }
+
+    private void Controlled()
+    {
+        agent.SetDestination(controlledTarget);
+        if (Vector3.Distance(controlledTarget, transform.position) <= 5)
+        {
+            enemyState = EnemyStates.Roam;
+        }
+    }
+    public void SetControlledTarget(Vector3 target)
+    {
+        if (enemyState != EnemyStates.Dead)
+        {
+            target.y = 0;
+            controlledTarget = target;
+            enemyState = EnemyStates.Controlled;
+        }
+    }
+
+    public void SetCurrentTarget(GameObject target)
+    {
+        if (enemyState != EnemyStates.Dead)
+        {
+            currentTarget = target;
+            enemyState = EnemyStates.Chase;
         }
     }
     private void CheckMyTeam()
