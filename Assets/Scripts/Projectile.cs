@@ -72,7 +72,19 @@ public class Projectile : MonoBehaviour
     {
 
     }
+    private void OnTriggerEnter(Collider collider)
+    {
 
+        if (collider.GetComponent<EnemyMovement>())
+            collider.GetComponent<EnemyMovement>().Hit(25);
+        if (collider.GetComponent<PlayerMovement>())
+            collider.GetComponent<PlayerMovement>().Hit(25);
+        if (collider.tag == "Attackers" || collider.tag == "Defenders")
+        {
+            Destroy(gameObject);
+        }
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
         Collider collider = collision.collider;

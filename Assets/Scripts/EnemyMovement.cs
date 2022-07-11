@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.UI;
 public class EnemyMovement : MonoBehaviour
 {
 
@@ -28,6 +28,12 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] public Vector3 controlledTarget;
     private TeamController teamController;
     public int HealthPoints => healthPoints;
+
+    [SerializeField] Image attackIcon;
+    [SerializeField] Sprite currentSprite = null;
+    public List<GameObject> Targets { get => targets; set => targets = value; }
+    Color spriteColor;
+    bool isTargeted = false;
     private bool isAttacking;
     public float chaseRange = 1000;
     public float walkSpeed = 1;
@@ -52,6 +58,8 @@ public class EnemyMovement : MonoBehaviour
         uicontroller = FindObjectOfType<UIController>();
         maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
         teamController = FindObjectOfType<TeamController>();
+        attackIcon = GetComponentInChildren<Image>();
+
     }
     // Start is called before the first frame update
     void Start()
@@ -107,7 +115,18 @@ public class EnemyMovement : MonoBehaviour
         }
 
     }
-
+    public void SetTargeted(Sprite sprite)
+    {
+        attackIcon.sprite = sprite;
+        attackIcon.color = spriteColor;
+        attackIcon.gameObject.SetActive(true);
+    }
+    public void RemoveTargeted()
+    {
+        attackIcon.sprite = null;
+        attackIcon.color = new Color(0, 0, 0, 0);
+        attackIcon.gameObject.SetActive(false);
+    }
     private void Controlled()
     {
         agent.SetDestination(controlledTarget);
@@ -144,9 +163,11 @@ public class EnemyMovement : MonoBehaviour
                 var c = Color.red;
                 mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
             }
+            spriteColor = new Color(0.5f, 0.5f, 1, 1);
             targets = teamController.Defenders;
             targets.Remove(gameObject);
             enemyTeam = "Defenders";
+
         }
         else if (gameObject.tag == "Defenders")
         {
@@ -155,9 +176,11 @@ public class EnemyMovement : MonoBehaviour
             {
                 mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
             }
+            spriteColor = new Color(1, 0.5f, 0.5f, 1);
             targets = teamController.Attackers;
             targets.Remove(gameObject);
             enemyTeam = "Attackers";
+
         }
     }
 

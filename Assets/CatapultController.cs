@@ -6,14 +6,15 @@ using UnityEngine;
 public class CatapultController : MonoBehaviour
 {
     [SerializeField] GameObject projectile;
-    private GameObject[] targets;
+    [SerializeField] private GameObject[] targets;
     [SerializeField] GameObject projectileSpawn;
     [SerializeField] private GameObject currentTarget;
+
     private bool isAttacking = false;
     private Animator anim;
     private GameObject maxTarget;
-    
-    
+    [SerializeField] public bool isControlled = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,10 +30,28 @@ public class CatapultController : MonoBehaviour
         {
             transform.LookAt(currentTarget.transform);
         }
-        if ((int)Time.time % 2 == 0)
-            ChooseEnemyInRange();
+        if (isControlled)
+        {
+            if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().IsDead())
+            {
+                isControlled = false;
+                return;
+            }
+            Shoot();
+        }
+        else
+        {
+            if ((int)Time.time % 2 == 0)
+                ChooseEnemyInRange();
+        }
     }
 
+    public void SetControlledTarget(GameObject target)
+    {
+        print("TEST");
+        isControlled = true;
+        currentTarget = target;
+    }
     private void ChooseEnemyInRange()
     {
         currentTarget = maxTarget;
@@ -47,6 +66,7 @@ public class CatapultController : MonoBehaviour
         }
         Shoot();
     }
+
 
     void Shoot()
     {

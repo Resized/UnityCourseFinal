@@ -142,6 +142,7 @@ public class UIController : MonoBehaviour
 
     public void ChooseAttackers()
     {
+        print("CHECK ME ");
         player.tag = "Attackers";
         teamController.AddObjectToAttackers(player);
         hasPlayerChosenTeam = true;
@@ -154,6 +155,9 @@ public class UIController : MonoBehaviour
         player.transform.rotation = attackersSpawnPoint.rotation;
         player.GetComponent<CharacterController>().enabled = true;
         player.GetComponent<PlayerMovement>().SetupTeammates();
+
+        teamController.Defenders[0].GetComponent<EnemyMovement>().Targets.Add(player.gameObject);
+
         ResumeGame();
     }
 
@@ -172,6 +176,7 @@ public class UIController : MonoBehaviour
         // Debug.Log("Moved player to " + defendersSpawnPoint.position);
         player.GetComponent<CharacterController>().enabled = true;
         player.GetComponent<PlayerMovement>().SetupTeammates();
+        teamController.Attackers[0].GetComponent<EnemyMovement>().Targets.Add(player.gameObject);
         ResumeGame();
     }
 
