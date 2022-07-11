@@ -7,12 +7,14 @@ public class WeaponController : MonoBehaviour
 {
     private Animator anim;
     private bool isAttacking = false;
+    private PlayerMovement player;
     public GameObject weapon;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        player = GetComponentInParent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -37,7 +39,7 @@ public class WeaponController : MonoBehaviour
     internal void Hit(Collider other)
     {
         // set hit animation on collider
-        if (isAttacking)
+        if (isAttacking && other.GetComponent<EnemyMovement>() && other.tag != player.tag)
         {
             other.GetComponent<EnemyMovement>().Hit(25);
         }

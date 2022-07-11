@@ -11,11 +11,15 @@ public class TeamController : MonoBehaviour
     public List<GameObject> Defenders { get => defenders; set => defenders = value; }
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         Attackers = new List<GameObject>(GameObject.FindGameObjectsWithTag("Attackers"));
         Defenders = new List<GameObject>(GameObject.FindGameObjectsWithTag("Defenders"));
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
     }
 
     // Update is called once per frame

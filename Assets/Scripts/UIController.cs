@@ -151,6 +151,7 @@ public class UIController : MonoBehaviour
         chooseAttackersBtn.gameObject.SetActive(false);
         chooseDefendersBtn.gameObject.SetActive(false);
         player.transform.position = attackersSpawnPoint.position;
+        player.transform.rotation = attackersSpawnPoint.rotation;
         player.GetComponent<CharacterController>().enabled = true;
         ResumeGame();
     }
@@ -166,6 +167,7 @@ public class UIController : MonoBehaviour
         chooseAttackersBtn.gameObject.SetActive(false);
         chooseDefendersBtn.gameObject.SetActive(false);
         player.transform.position = defendersSpawnPoint.position;
+        player.transform.rotation = defendersSpawnPoint.rotation;
         Debug.Log("Moved player to " + defendersSpawnPoint.position);
         player.GetComponent<CharacterController>().enabled = true;
         ResumeGame();
