@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] private GameObject currentTarget;
     [SerializeField]
-    private GameObject[] targets;
+    private List<GameObject> targets;
     [SerializeField] private bool isDead = false;
     private string enemyTeam;
     private Animator animator;
@@ -25,6 +25,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float windUpTime;
     [SerializeField] private EnemyType myEnemyType;
     [SerializeField] private GameObject maxTarget;
+    private TeamController teamController;
     public int HealthPoints => healthPoints;
     private bool isAttacking;
     public float chaseRange = 1000;
@@ -48,6 +49,7 @@ public class EnemyMovement : MonoBehaviour
     {
         uicontroller = FindObjectOfType<UIController>();
         maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
+        teamController = FindObjectOfType<TeamController>();
     }
     // Start is called before the first frame update
     void Start()
@@ -101,7 +103,7 @@ public class EnemyMovement : MonoBehaviour
     }
     private void CheckMyTeam()
     {
-        if (gameObject.tag == "Team1")
+        if (gameObject.tag == "Attackers")
         {
             var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach (var mesh in meshes)
@@ -109,20 +111,20 @@ public class EnemyMovement : MonoBehaviour
                 var c = Color.red;
                 mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
             }
-            targets = GameObject.FindGameObjectsWithTag("Team2");
-            enemyTeam = "Team2";
+            targets = teamController.Defenders;
+            targets.Remove(gameObject);
+            enemyTeam = "Defenders";
         }
-        else
+        else if (gameObject.tag == "Defenders")
         {
             var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach (var mesh in meshes)
             {
-
                 mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
             }
-            targets = GameObject.FindGameObjectsWithTag("Team1");
-
-            enemyTeam = "Team1";
+            targets = teamController.Attackers;
+            targets.Remove(gameObject);
+            enemyTeam = "Attackers";
         }
     }
 
@@ -255,6 +257,7 @@ public class EnemyMovement : MonoBehaviour
     IEnumerator Hit()
     {
         agent.isStopped = true;
+        animator.SetTrigger("Hit");
         yield return new WaitForSeconds(1);
         if (agent.enabled)
             agent.isStopped = false;
@@ -265,6 +268,10 @@ public class EnemyMovement : MonoBehaviour
         isAttacking = true;
         agent.isStopped = true;
         transform.LookAt(currentTarget.transform);
+
+        Vector3 relativePos = currentTarget.transform.position - transform.position;
+        Quaternion toRotation = Quaternion.LookRotation(relativePos);
+        transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, 1 * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         animator.SetTrigger("Attack");
 

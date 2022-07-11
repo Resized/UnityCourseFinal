@@ -47,7 +47,7 @@ public class KillFeedText : MonoBehaviour
     public void SetupFeedObject()
     {
         feedTMP.text = $"Bot {messageName} Died";
-        if (messageTag == "Team1")
+        if (messageTag == "Attackers")
         {
             startColor = Color.blue;
             startColor.r = 0.7f;

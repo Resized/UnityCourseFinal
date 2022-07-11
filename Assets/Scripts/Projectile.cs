@@ -102,7 +102,7 @@ public class Projectile : MonoBehaviour
                     collider.GetComponent<EnemyMovement>().Hit(25);
                 if (collider.GetComponent<PlayerMovement>())
                     collider.GetComponent<PlayerMovement>().Hit(25);
-                if (collider.tag == "Team1" || collider.tag == "Team2")
+                if (collider.tag == "Attackers" || collider.tag == "Defenders")
                 {
                     Destroy(gameObject);
                 }

@@ -6,12 +6,12 @@ TagManager:
   tags:
   - Chest
   - Enemy
-  - Team1
-  - Team2
   - catapult
   - arrow
   - MaxTarget
   - bomb
+  - Attackers
+  - Defenders
   layers:
   - Default
   - TransparentFX

@@ -14799,7 +14799,7 @@ GameObject:
   - component: {fileID: 5830794085472444084}
   - component: {fileID: 7233657993033905934}
   - component: {fileID: 2981804736728458386}
-  - component: {fileID: 4454359153481313205}
+  - component: {fileID: 5841469424365684699}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: bomb
@@ -14851,9 +14851,9 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.22
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0.15, z: 0}
---- !u!114 &4454359153481313205
+--- !u!114 &5841469424365684699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

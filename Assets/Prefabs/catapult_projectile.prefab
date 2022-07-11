@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2680694350784090679}
   - component: {fileID: 4361605626042872128}
   - component: {fileID: 9097382428172841099}
-  - component: {fileID: 2303167971937203547}
+  - component: {fileID: 4241008014555741997}
   m_Layer: 0
   m_Name: catapult_projectile
   m_TagString: catapult
@@ -115,7 +115,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.35
   m_Center: {x: -0.006822057, y: 0.06362495, z: -0.0024867207}
---- !u!114 &2303167971937203547
+--- !u!114 &4241008014555741997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,3 +127,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98181a35173e2ee47803d1c76edfc008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosion: {fileID: 0}

@@ -39,8 +39,6 @@ public class WeaponController : MonoBehaviour
         // set hit animation on collider
         if (isAttacking)
         {
-            print("test");
-            other.GetComponent<Animator>().SetTrigger("Hit");
             other.GetComponent<EnemyMovement>().Hit(25);
         }
     }

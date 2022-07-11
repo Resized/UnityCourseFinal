@@ -18,7 +18,7 @@ public class CatapultController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        targets = GameObject.FindGameObjectsWithTag("Team2");
+        targets = GameObject.FindGameObjectsWithTag("Defenders");
         maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
     }
 
