@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     List<GameObject> myCatapults = new List<GameObject>();
 
     GameObject[] lastTargets;
-    [SerializeField] Sprite[] skills;
+    //[SerializeField] Sprite[] skills;
 
     EnemyMovement lastTarget;
     public float speed = 12f;
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         teamController = FindObjectOfType<TeamController>();
-        lastTargets = new GameObject[skills.Length];
+        lastTargets = new GameObject[Enum.GetNames(typeof(TeamController.TargetIconsEnum)).Length];
     }
 
     // Start is called before the first frame update
@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 CatapultAttack();
-
             }
         }
         else
@@ -105,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     {
         hpBar.fillAmount = healthPoints / maxHP;
     }
-    void GetRaycast(int skillUsed)
+    void GetRaycast(TeamController.TargetIconsEnum targetIcon)
     {
         enemyTarget = null;
         validTarget = false;
@@ -121,27 +120,32 @@ public class PlayerMovement : MonoBehaviour
                     return;
                 }
                 enemyTarget = enemy.transform;
-                if (lastTargets[skillUsed - 1])
+                if (lastTargets[(int)targetIcon])
                 {
-
-                    if (enemy.gameObject != lastTargets[skillUsed - 1])
+                    if (enemy.gameObject != lastTargets[(int)targetIcon])
                     {
-                        enemy.SetTargeted(skills[skillUsed - 1]);
-                        lastTargets[skillUsed - 1].GetComponent<EnemyMovement>().RemoveTargeted();
-                        lastTargets[skillUsed - 1] = enemy.gameObject;
+                        enemy.SetIconOnTarget(targetIcon);
+                        lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveTargeted(targetIcon);
+                        lastTargets[(int)targetIcon] = null;
+                        lastTargets[(int)targetIcon] = enemy.gameObject;
 
                     }
                 }
                 else
                 {
-                    enemy.SetTargeted(skills[skillUsed - 1]);
-                    lastTargets[skillUsed - 1] = enemy.gameObject;
+                    enemy.SetIconOnTarget(targetIcon);
+                    lastTargets[(int)targetIcon] = enemy.gameObject;
                 }
                 validTarget = true;
             }
             else
             {
                 attackTargetPosition = hit.point;
+                if (lastTargets[(int)targetIcon])
+                {
+                    lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveTargeted(targetIcon);
+                    lastTargets[(int)targetIcon] = null;
+                }
                 validTarget = false;
             };
 
@@ -150,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
     bool validTarget = false;
     public void SoldiersAttack()
     {
-        GetRaycast(1);
+        GetRaycast(TeamController.TargetIconsEnum.Soldier);
 
         if (validTarget)
         {
@@ -177,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ArchersAttack()
     {
-        GetRaycast(2);
+        GetRaycast(TeamController.TargetIconsEnum.Archer);
 
         if (validTarget)
         {
@@ -201,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
 
     void GrenardierAttack()
     {
-        GetRaycast(3);
+        GetRaycast(TeamController.TargetIconsEnum.Grenadier);
 
         if (validTarget)
         {
@@ -224,17 +228,29 @@ public class PlayerMovement : MonoBehaviour
     }
     void CatapultAttack()
     {
-
-        GetRaycast(4);
-        catapultTarget.transform.position = hit.point;
-        myCatapults.ForEach(cata =>
+        GetRaycast(TeamController.TargetIconsEnum.Catapult);
+        if (validTarget)
         {
-            print("TEST2");
-            print(cata.name);
-            CatapultController cataController = cata.GetComponent<CatapultController>();
-            cataController.isControlled = true;
-            cataController.SetControlledTarget(catapultTarget);
-        });
+            myCatapults.ForEach(cata =>
+            {
+                CatapultController cataController = cata.GetComponent<CatapultController>();
+                cataController.isControlled = true;
+                cataController.SetTarget(enemyTarget.gameObject);
+            });
+            
+        }
+        else
+        {
+            catapultTarget.transform.position = hit.point;
+            myCatapults.ForEach(cata =>
+            {
+                print("TEST2");
+                print(cata.name);
+                CatapultController cataController = cata.GetComponent<CatapultController>();
+                cataController.isControlled = true;
+                cataController.SetControlledTarget(catapultTarget);
+            });
+        }
     }
 
     internal void Hit(int hitAmount)

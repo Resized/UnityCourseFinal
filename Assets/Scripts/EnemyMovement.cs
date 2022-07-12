@@ -28,16 +28,18 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] public Vector3 controlledTarget;
     private TeamController teamController;
     public int HealthPoints => healthPoints;
+    private bool hasCurrentTarget = false;
 
-    [SerializeField] Image attackIcon;
+    [SerializeField] Image[] attackIcons;
     [SerializeField] Sprite currentSprite = null;
     public List<GameObject> Targets { get => targets; set => targets = value; }
     Color spriteColor;
     bool isTargeted = false;
-    private bool isAttacking;
+    [SerializeField]private bool isAttacking;
     public float chaseRange = 1000;
     public float walkSpeed = 1;
     public float runSpeed = 2;
+    private float attackRange;
     public enum EnemyType
     {
         Archer,
@@ -53,12 +55,13 @@ public class EnemyMovement : MonoBehaviour
         Controlled
     }
 
+
     private void Awake()
     {
         uicontroller = FindObjectOfType<UIController>();
         maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
         teamController = FindObjectOfType<TeamController>();
-        attackIcon = GetComponentInChildren<Image>();
+        attackIcons = GetComponentsInChildren<Image>();
 
     }
     // Start is called before the first frame update
@@ -71,13 +74,16 @@ public class EnemyMovement : MonoBehaviour
             case EnemyType.Archer:
                 attackCooldown = 0.6139f;
                 windUpTime = 1.1191f;
+                attackRange = 20f;
                 break;
             case EnemyType.Soldier:
                 attackCooldown = 1.1f;
+                attackRange = 3f;
                 break;
             case EnemyType.Grenadier:
                 attackCooldown = 2.6503f;
                 windUpTime = 2.2167f;
+                attackRange = 30f;
                 break;
         }
 
@@ -113,19 +119,19 @@ public class EnemyMovement : MonoBehaviour
             default:
                 break;
         }
-
+        
     }
-    public void SetTargeted(Sprite sprite)
+    public void SetIconOnTarget(TeamController.TargetIconsEnum icon)
     {
-        attackIcon.sprite = sprite;
-        attackIcon.color = spriteColor;
-        attackIcon.gameObject.SetActive(true);
+        attackIcons[(int)icon].sprite = teamController.skills[(int)icon];
+        attackIcons[(int)icon].color = spriteColor;
+        attackIcons[(int)icon].gameObject.SetActive(true);
     }
-    public void RemoveTargeted()
+    public void RemoveTargeted(TeamController.TargetIconsEnum icon)
     {
-        attackIcon.sprite = null;
-        attackIcon.color = new Color(0, 0, 0, 0);
-        attackIcon.gameObject.SetActive(false);
+        attackIcons[(int)icon].sprite = null;
+        attackIcons[(int)icon].color = new Color(0, 0, 0, 0);
+        attackIcons[(int)icon].gameObject.SetActive(false);
     }
     private void Controlled()
     {
@@ -149,6 +155,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (enemyState != EnemyStates.Dead)
         {
+            hasCurrentTarget = true;
             currentTarget = target;
             enemyState = EnemyStates.Chase;
         }
@@ -160,8 +167,7 @@ public class EnemyMovement : MonoBehaviour
             var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach (var mesh in meshes)
             {
-                var c = Color.red;
-                mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
+                mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
             }
             spriteColor = new Color(0.5f, 0.5f, 1, 1);
             targets = teamController.Defenders;
@@ -174,7 +180,7 @@ public class EnemyMovement : MonoBehaviour
             var meshes = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach (var mesh in meshes)
             {
-                mesh.material.color = new Color(1, 0.5f, 0.5f, 1);
+                mesh.material.color = new Color(0.5f, 0.5f, 1, 1);
             }
             spriteColor = new Color(1, 0.5f, 0.5f, 1);
             targets = teamController.Attackers;
@@ -208,26 +214,43 @@ public class EnemyMovement : MonoBehaviour
     private void Chase()
     {
         agent.speed = runSpeed;
-        agent.SetDestination(currentTarget.transform.position);
         animator.SetInteger("State", (int)EnemyStates.Chase);
+        agent.SetDestination(currentTarget.transform.position);
 
         // check if distance to player is less than stopping distance
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance && !isAttacking)
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= attackRange)
         {
-            StartCoroutine(Attack());
+            if (!isAttacking)
+            {
+                agent.isStopped = true;
+                StartCoroutine(Attack());
+            }
+        }
+        else
+        {
+            agent.isStopped = false;
         }
 
         if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().isDead)
         {
+            agent.ResetPath();
+            hasCurrentTarget = false;
             enemyState = EnemyStates.Roam;
         }
+        if (!hasCurrentTarget)
+        {
+            if ((int)Time.time % 2 == 0)
+                ChooseEnemyInRange();
+        }
 
-        if ((int)Time.time % 2 == 0)
-            ChooseEnemyInRange();
     }
     private void Dead()
     {
         animator.SetInteger("State", (int)EnemyStates.Dead);
+        foreach (var icon in attackIcons)
+        {
+            icon.gameObject.SetActive(false);
+        }
         //destroy enemy collision
         StopAllCoroutines();
         isDead = true;

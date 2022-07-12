@@ -67,6 +67,10 @@ public class CatapultController : MonoBehaviour
         Shoot();
     }
 
+    public void SetTarget(GameObject target)
+    {
+        currentTarget = target;
+    }
 
     void Shoot()
     {

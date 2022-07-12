@@ -25,6 +25,18 @@ public class TeamController : MonoBehaviour
     public List<GameObject> DefenderArchers { get => defenderArchers; set => defenderArchers = value; }
     public List<GameObject> DefenderGrenardiers { get => defenderGrenardiers; set => defenderGrenardiers = value; }
 
+    [SerializeField] public Sprite[] skills;
+
+    public enum TargetIconsEnum: int
+    {
+        Soldier = 0,
+        Archer,
+        Grenadier,
+        Catapult
+    }
+
+
+
 
     private void Awake()
     {

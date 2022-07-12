@@ -42,7 +42,10 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1;
+    }
+
+    private void SetupTeams()
+    {
         var playerTeam = player.tag;
         var enemyGameObjects = GameObject.FindObjectsOfType<EnemyMovement>();
         e = GameObject.FindObjectsOfType<EnemyMovement>();
@@ -53,7 +56,6 @@ public class UIController : MonoBehaviour
             else
                 friendlies.Add(enemyGO.GetComponent<EnemyMovement>());
         }
-
     }
     public void EnemyDied(EnemyMovement enemy)
     {
@@ -81,8 +83,11 @@ public class UIController : MonoBehaviour
         {
             ChooseTeam();
         }
-        CheckLoss();
-        CheckWin();
+        else
+        {
+            CheckLoss();
+            CheckWin();
+        }
     }
 
     private void ChooseTeam()
@@ -138,6 +143,7 @@ public class UIController : MonoBehaviour
     void ResumeGame()
     {
         Time.timeScale = 1.0f;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void ChooseAttackers()
@@ -157,7 +163,7 @@ public class UIController : MonoBehaviour
         player.GetComponent<PlayerMovement>().SetupTeammates();
 
         teamController.Defenders[0].GetComponent<EnemyMovement>().Targets.Add(player.gameObject);
-
+        SetupTeams();
         ResumeGame();
     }
 
@@ -177,6 +183,7 @@ public class UIController : MonoBehaviour
         player.GetComponent<CharacterController>().enabled = true;
         player.GetComponent<PlayerMovement>().SetupTeammates();
         teamController.Attackers[0].GetComponent<EnemyMovement>().Targets.Add(player.gameObject);
+        SetupTeams();
         ResumeGame();
     }
 
