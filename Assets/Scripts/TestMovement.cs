@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-public class EnemyMovement : MonoBehaviour
+public class TestMovement : MonoBehaviour
 {
 
     public UIController uicontroller;
@@ -215,7 +215,7 @@ public class EnemyMovement : MonoBehaviour
             agent.isStopped = false;
         }
 
-        if (currentTarget.GetComponent<EnemyMovement>() && currentTarget.GetComponent<EnemyMovement>().isDead)
+        if (currentTarget.GetComponent<TestMovement>() && currentTarget.GetComponent<TestMovement>().isDead)
         {
             agent.ResetPath();
             hasCurrentTarget = false;
@@ -254,11 +254,11 @@ public class EnemyMovement : MonoBehaviour
         currentTarget = maxTarget;
         foreach (GameObject target in targets)
         {
-            if (target.GetComponent<EnemyMovement>())
+            if (target.GetComponent<TestMovement>())
             {
                 if (Vector3.Distance(transform.position, target.transform.position)
                     <= Vector3.Distance(transform.position, currentTarget.transform.position)
-                    && !target.GetComponent<EnemyMovement>().isDead)
+                    && !target.GetComponent<TestMovement>().isDead)
                 {
                     currentTarget = target;
                 }
@@ -295,7 +295,7 @@ public class EnemyMovement : MonoBehaviour
         if (healthPoints <= 0)
         {
             enemyState = EnemyStates.Dead;
-            uicontroller.EnemyDied(this);
+            uicontroller.EnemyDied(GetComponent<EnemyMovement>());
             return;
         }
         StartCoroutine(Hit());
@@ -345,8 +345,8 @@ public class EnemyMovement : MonoBehaviour
         else if (myEnemyType == EnemyType.Soldier)
         {
             yield return new WaitForSeconds(attackCooldown);
-            if (currentTarget.GetComponent<EnemyMovement>())
-                currentTarget.GetComponent<EnemyMovement>().Hit(25);
+            if (currentTarget.GetComponent<TestMovement>())
+                currentTarget.GetComponent<TestMovement>().Hit(25);
             if (currentTarget.GetComponent<PlayerMovement>())
                 currentTarget.GetComponent<PlayerMovement>().Hit(25);
         }

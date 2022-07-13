@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxHP = 100;
     public float HealthPoints => healthPoints;
     public CharacterController controller;
-
+    public GameObject markers;
     public Image hpBar;
     [SerializeField] public GameObject catapultTarget;
     TeamController teamController;
@@ -19,14 +19,12 @@ public class PlayerMovement : MonoBehaviour
     List<GameObject> myArchers = new List<GameObject>();
     List<GameObject> myGrenardiers = new List<GameObject>();
     List<GameObject> myCatapults = new List<GameObject>();
-
     GameObject[] lastTargets;
-    //[SerializeField] Sprite[] skills;
-
-    EnemyMovement lastTarget;
     public float speed = 12f;
+    bool validTarget = false;
     RaycastHit hit;
-
+    Transform enemyTarget;
+    Vector3 attackTargetPosition;
     public Vector3 velocity;
 
     private void Awake()
@@ -34,43 +32,18 @@ public class PlayerMovement : MonoBehaviour
         teamController = FindObjectOfType<TeamController>();
         lastTargets = new GameObject[Enum.GetNames(typeof(TeamController.TargetIconsEnum)).Length];
     }
-
     // Start is called before the first frame update
     private void Start()
     {
         maxHP = healthPoints;
     }
-
-    public void SetupTeammates()
-    {
-
-        if (tag == "Attackers")
-        {
-            myTeam = teamController.Attackers;
-            mySoldiers = teamController.AttackerSoldiers;
-            myArchers = teamController.AttackerArchers;
-            myCatapults = teamController.AttackerCatapults;
-        }
-        else
-        {
-            myTeam = teamController.Defenders;
-            mySoldiers = teamController.DefenderSoldiers;
-            myArchers = teamController.DefenderArchers;
-            myGrenardiers = teamController.DefenderGrenardiers;
-        }
-        myTeam.Remove(gameObject);
-    }
-
     // Update is called once per frame
     private void Update()
     {
         float z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
         float x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f;
-
         Vector3 move = transform.right * x + transform.forward * z;
-
         controller.Move(move * speed);
-
         velocity.y += Physics.gravity.y * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -96,14 +69,33 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         updateHPBar();
-    }
-    Transform enemyTarget;
-    Vector3 attackTargetPosition;
 
+    }
+    public void SetupTeammates()
+    {
+
+        if (tag == "Attackers")
+        {
+            myTeam = teamController.Attackers;
+            mySoldiers = teamController.AttackerSoldiers;
+            myArchers = teamController.AttackerArchers;
+            myCatapults = teamController.AttackerCatapults;
+        }
+        else
+        {
+            myTeam = teamController.Defenders;
+            mySoldiers = teamController.DefenderSoldiers;
+            myArchers = teamController.DefenderArchers;
+            myGrenardiers = teamController.DefenderGrenardiers;
+        }
+        myTeam.Remove(gameObject);
+    }
     void updateHPBar()
     {
         hpBar.fillAmount = healthPoints / maxHP;
     }
+
+
     void GetRaycast(TeamController.TargetIconsEnum targetIcon)
     {
         enemyTarget = null;
@@ -125,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
                     if (enemy.gameObject != lastTargets[(int)targetIcon])
                     {
                         enemy.SetIconOnTarget(targetIcon);
-                        lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveTargeted(targetIcon);
+                        lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveIconOnTarget(targetIcon);
                         lastTargets[(int)targetIcon] = null;
                         lastTargets[(int)targetIcon] = enemy.gameObject;
 
@@ -140,10 +132,23 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+                var redColor = new Color(1f, 0.5f, 0.5f, 1);
+                var blueColor = new Color(0.5f, 0.5f, 1, 1);
+                GameObject currentMarker = markers.transform.GetChild((int)targetIcon).gameObject;
                 attackTargetPosition = hit.point;
+                currentMarker.transform.position = attackTargetPosition + new Vector3(0, 0.05f, 0);
+                Debug.DrawLine(Camera.main.transform.position, attackTargetPosition, Color.white, 5);
+                currentMarker.gameObject.SetActive(true);
+                GameObject attCanvas = currentMarker.transform.Find("AttackIconCanvas").gameObject;
+                GameObject floorCanvas = currentMarker.transform.Find("FloorTargetCanvas").gameObject;
+                Image floorImage = floorCanvas.GetComponentInChildren<Image>();
+                floorImage.color = tag == "Defenders" ? blueColor : redColor;
+                Image[] images = attCanvas.GetComponentsInChildren<Image>();
+                images[0].sprite = teamController.skills[(int)targetIcon];
+                images[0].color = tag == "Defenders" ? blueColor : redColor;
                 if (lastTargets[(int)targetIcon])
                 {
-                    lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveTargeted(targetIcon);
+                    lastTargets[(int)targetIcon].GetComponent<EnemyMovement>().RemoveIconOnTarget(targetIcon);
                     lastTargets[(int)targetIcon] = null;
                 }
                 validTarget = false;
@@ -151,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
-    bool validTarget = false;
+
     public void SoldiersAttack()
     {
         GetRaycast(TeamController.TargetIconsEnum.Soldier);
@@ -175,9 +180,6 @@ public class PlayerMovement : MonoBehaviour
             });
         }
     }
-
-
-
 
     void ArchersAttack()
     {
@@ -237,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
                 cataController.isControlled = true;
                 cataController.SetTarget(enemyTarget.gameObject);
             });
-            
+
         }
         else
         {
