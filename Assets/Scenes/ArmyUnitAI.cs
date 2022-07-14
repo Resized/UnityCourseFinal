@@ -7,8 +7,12 @@ public class ArmyUnitAI : MonoBehaviour
 {
     private NavMeshAgent agent;
     // Start is called before the first frame update
-    private GameObject currentTarget;
+    private ITargetable currentTarget;
+    [SerializeField] GameObject curTarget;
     private Animator animator;
+    Collider[] collidersInRange;
+    private float attackRange = 10;
+
     void Start()
     {
 
@@ -17,8 +21,58 @@ public class ArmyUnitAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (curTarget == null)
+        {
+            SearchTargetsInRange();
+        }
 
     }
+
+
+    void SearchTargetsInRange()
+    {
+        collidersInRange = Physics.OverlapSphere(transform.position, attackRange);
+
+        ITargetable closestEnemy = null;
+        if (collidersInRange.Length != 0)
+        {
+            foreach (var collider in collidersInRange)
+            {
+                ITargetable target;
+                if (!collider.gameObject.TryGetComponent<ITargetable>(out target))
+                {
+                    continue;
+                }
+                if (closestEnemy == null)
+                {
+                    closestEnemy = target;
+                    continue;
+                }
+                if (CheckDistanceToTarget(closestEnemy) > CheckDistanceToTarget(target))
+                {
+                    closestEnemy = target;
+                }
+
+            }
+            if (closestEnemy != null)
+            {
+
+                currentTarget = closestEnemy;
+                curTarget = closestEnemy.gameObject;
+            }
+
+        }
+
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+    float CheckDistanceToTarget(ITargetable target)
+    {
+        return Vector3.Distance(transform.position, target.transform.position);
+    }
+
     // private void Idle()
     // {
     //     animator.SetInteger("State", (int)EnemyStates.Idle);
@@ -117,4 +171,11 @@ public class ArmyUnitAI : MonoBehaviour
     //     enemyState = EnemyStates.Chase;
     // }
 
+}
+
+
+public interface ITargetable
+{
+    Transform transform { get; }
+    GameObject gameObject { get; }
 }

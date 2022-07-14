@@ -56,10 +56,12 @@ public class EnemyMovement : MonoBehaviour
     private void Awake()
     {
         uicontroller = FindObjectOfType<UIController>();
+
         maxTarget = GameObject.FindGameObjectWithTag("MaxTarget");
         teamController = FindObjectOfType<TeamController>();
         attackIcons = GetComponentsInChildren<Image>();
-
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
@@ -84,8 +86,7 @@ public class EnemyMovement : MonoBehaviour
                 break;
         }
 
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+
         enemyState = EnemyStates.Idle;
         eyeHeight = transform.Find("EyeHeight").gameObject;
         healthPoints = UnityEngine.Random.Range(300, 600);
@@ -199,6 +200,7 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.speed = runSpeed;
         animator.SetInteger("State", (int)EnemyStates.Chase);
+
         agent.SetDestination(currentTarget.transform.position);
 
         // check if distance to player is less than stopping distance
