@@ -148,7 +148,7 @@ public class UIController : MonoBehaviour
 
     public void ChooseAttackers()
     {
-        print("CHECK ME ");
+
         player.tag = "Attackers";
         teamController.AddObjectToAttackers(player);
         hasPlayerChosenTeam = true;

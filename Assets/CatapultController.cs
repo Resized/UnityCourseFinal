@@ -48,7 +48,7 @@ public class CatapultController : MonoBehaviour
 
     public void SetControlledTarget(GameObject target)
     {
-        print("TEST");
+
         isControlled = true;
         currentTarget = target;
     }

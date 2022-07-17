@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (validTarget)
         {
-            print("Attacking an enemy: " + enemyTarget.name);
+
             mySoldiers.ForEach(soldier =>
             {
                 EnemyMovement soldierController = soldier.GetComponent<EnemyMovement>();
