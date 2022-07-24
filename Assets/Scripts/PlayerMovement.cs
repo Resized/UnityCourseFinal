@@ -246,8 +246,8 @@ public class PlayerMovement : MonoBehaviour
             catapultTarget.transform.position = hit.point;
             myCatapults.ForEach(cata =>
             {
-                print("TEST2");
-                print(cata.name);
+
+
                 CatapultController cataController = cata.GetComponent<CatapultController>();
                 cataController.isControlled = true;
                 cataController.SetControlledTarget(catapultTarget);

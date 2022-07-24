@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e66c6366d904e98bc83428217d4fd7, type: 3}
+  m_Name: TESTTEST
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{},"position":{"x":-204.0,"y":-144.0},"guid":"a0b49169-c2c9-453e-a030-ce699f38a55f","$version":"A","$type":"Unity.VisualScripting.Start"},{"coroutine":false,"defaultValues":{},"position":{"x":-204.0,"y":60.0},"guid":"fe82fd03-d056-47c4-ad75-0e887314b38f","$version":"A","$type":"Unity.VisualScripting.Update"},{"type":"UnityEngine.Shader","value":{"$content":0,"$type":"UnityEngine.Object"},"defaultValues":{},"position":{"x":-227.0,"y":-48.0},"guid":"789c53a1-f538-4864-94b8-4edc40972341","$version":"A","$type":"Unity.VisualScripting.Literal"}],"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 4800000, guid: ff29c1941122a994fb5ce37b44bcc2a6, type: 3}

@@ -5,7 +5,7 @@ public class ArrowProjectile : ProjectileBase
 {
     public override void OnCollisionEnter(Collision collision)
     {
-        print("collision");
+
         IHittable target;
         if (!collision.gameObject.TryGetComponent<IHittable>(out target))
         {
@@ -16,7 +16,7 @@ public class ArrowProjectile : ProjectileBase
 
     public override void OnTriggerEnter(Collider collider)
     {
-        print("trigger");
+
         IHittable target;
         if (!collider.gameObject.TryGetComponent<IHittable>(out target))
         {

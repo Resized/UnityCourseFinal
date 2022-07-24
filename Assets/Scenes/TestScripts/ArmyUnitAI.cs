@@ -193,7 +193,7 @@ public class ArmyUnitAI : MonoBehaviour
         agent.SetDestination(currentTarget.transform.position);
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            print("test");
+
             SwitchState(AIStates.Attack);
         }
     }

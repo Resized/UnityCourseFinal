@@ -5,34 +5,34 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(MeshRenderer))]
+
 public abstract class ProjectileBase : MonoBehaviour
 {
     private ITargetable targetPoint;
     public float speed = 50f;
     public bool isVisible = false;
-    public float damageOnHit = 15;
+    public float damageOnHit;
     public Rigidbody rb;
+    protected GameObject parentObject;
 
-    private void Awake()
+    protected virtual void Awake()
     {
 
         rb = GetComponent<Rigidbody>();
+        GetComponent<Collider>().enabled = false;
 
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
 
         rb.isKinematic = false;
+        GetComponent<Collider>().enabled = true;
         Destroy(gameObject, 7);
         Vector3 targetCenter = targetPoint.gameObject.GetComponent<Collider>().bounds.center + (Vector3.up * 0.3f);
         rb.AddForce(calcBestThrowVec(transform.position, targetCenter, speed), ForceMode.VelocityChange);
         Debug.DrawLine(transform.position, targetCenter, Color.red, 10);
     }
-    void Start()
-    {
 
-
-    }
 
     private void Update()
     {
@@ -47,10 +47,11 @@ public abstract class ProjectileBase : MonoBehaviour
         }
     }
 
-    public void SetTarget(ITargetable currentTarget, float projectileSpeed)
+    public void SetTarget(ITargetable currentTarget, float projectileSpeed, GameObject shooter)
     {
         targetPoint = currentTarget;
         speed = projectileSpeed;
+        parentObject = shooter;
         transform.LookAt(targetPoint.transform);
 
     }
